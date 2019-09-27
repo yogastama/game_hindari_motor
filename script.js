@@ -1,22 +1,50 @@
+//deklarasi global variable
+let game;
+let orang;
+
+function pause(){
+	orang.css({'animation-play-state': 'paused'});
+}
+
+function berhentiLompat(){
+	orang.on("animationend", function() {
+	    $(this).removeClass("lompat");
+	});
+}
+
+function jalan(){
+	orang.css({'animation-play-state': 'running'});
+	orang.addClass('jalan');
+}
+
+function bikinMotor(){
+	game.append('<div class="motor"');
+}
+
+function init(){
+	bikinMotor();
+}
+
 $(document).ready(function(){
 
-	$('.tombolAnimation').on('click', function() { 
+	game = $('#game');
+	orang = $('.orang');
 
-		let orang = $('.orang');
-		let tombol = $(this).attr('command');
-
-		if(tombol === 'jalan') {
-			orang.css({'animation-play-state': 'running'});
-			// orang.removeClass('lompat');
-			orang.addClass('jalan');
-		}
-		else if(tombol === 'lompat') {
-			// orang.removeClass('jalan');
-			orang.addClass('lompat');
-		} 
-		else if(tombol === 'berhenti') {
-			orang.css({'animation-play-state': 'paused'});
-		}  
+	//berhenti
+	$('#tombolBerhenti').on('click', function() {
+		pause();
 	});
 
+	//Jalan
+	$('#tombolJalan').on('click', function() {
+		jalan();
+	});
+
+	//lompat
+	$('#tombolLompat').on('click', function() {
+		orang.addClass('lompat');
+		berhentiLompat();
+	});
+
+	init();
 });
