@@ -13,8 +13,12 @@ h4{font-size: 1em; margin-top: 0px;
 #tombolBerhenti{ background: #FF6666; }
 #tombolJalan{ background: #33C2DF; }
 
+.pause{
+  animation-play-state: paused !important;
+}
+
 /*animasi orang jalan*/
-.orang {
+#orang {
   width: 140px;
   height: 203px;
   margin: 0px auto;
@@ -22,7 +26,6 @@ h4{font-size: 1em; margin-top: 0px;
   left: 170px;
   bottom: 30px;
   background: url('images/animasi.png');
-  animation-play-state: paused;
 }
 
 .jalan{
@@ -37,6 +40,7 @@ h4{font-size: 1em; margin-top: 0px;
 .lompat{
   animation: lompat 2.7s steps(15) forwards;
 }
+
 
 @keyframes lompat {
     0% {
@@ -61,31 +65,28 @@ h4{font-size: 1em; margin-top: 0px;
   height: 136px;
   margin: 0px auto;
   background: url('images/motor.png');
-  animation-play-state: paused;
   position: absolute;
   bottom: 30px;
   z-index: -1;
-  animation: maju 20s infinite,
-             motorSatu .3s steps(3) infinite;
+  animation-play-state: paused;
 }
 
 @keyframes maju {
     from { left:1380px; }
-    to{ left: -500px; }
+    to{ left: -1000px; }
 }
 
-@keyframes motorSatu {
-    /*from { background-position-x: 0px; }*/
+@keyframes motor1 {
     to{ background-position-x: -750px; }
 }
 
-@keyframes motorDua {
+@keyframes motor2 {
     from { background-position-y: -136px; }
     to{ background-position-y: -136px; 
         background-position-x: -750px; }
 }
 
-@keyframes motorTiga {
+@keyframes motor3 {
     from { background-position-y: -272px; }
     to{ background-position-y: -272px;
         background-position-x: -750px; }
