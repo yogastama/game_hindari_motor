@@ -1,0 +1,53 @@
+body{ background:#f9f9f9; font-family: 'Roboto', sans-serif; }
+.container{ width: 600px; text-align: center; margin: 40px auto;}
+h3{color: #1cb7b0; font-size: 2.5em; letter-spacing: 0.1em;
+   margin-top: 0px; margin-bottom: 10px; }
+h4{font-size: 1em; margin-top: 0px;
+    margin-bottom: 40px; text-transform: uppercase; }
+.frame{ display: flex; flex-wrap: wrap; padding: 10px; align-content: center; }
+
+/*tombol*/
+.tombol{ flex-basis: 100%; }
+.tombolAnimation { border: none; color: white; padding: 10px 25px; margin-top: 20px;
+   				   text-transform: uppercase; font-weight: bold; cursor: pointer; }
+#tombolBerhenti{ background: #FF6666; }
+#tombolJalan{ background: #33C2DF; }
+
+/*animasi orang jalan*/
+.orang {
+  width: 250px;
+  height: 363px;
+  margin: 0px auto;
+  background: url('animasi.png');
+  /*animation-play-state: paused;*/
+  animation: jalan .7s steps(15) infinite,
+             lompat .7s steps(2) infinite;
+}
+
+.jalan{
+  animation: jalan .7s steps(15) infinite;
+}
+
+@keyframes jalan {
+    from {
+      background-position-x: 0px;
+    }
+    to{
+      background-position-x: -3750px;
+    }
+}
+
+.lompat{
+  animation: lompat .7s steps(15) infinite;
+}
+
+@keyframes lompat {
+    from {
+      background-position-y: 0px;
+    }
+    to{
+      /*background-position-x: -3750px;*/
+      background-position-y: -726px;
+    }
+
+}
