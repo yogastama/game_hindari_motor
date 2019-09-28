@@ -11,8 +11,29 @@ function pause(){
 	clearTimeout(timerId);
 }
 
+function jalan(){	
+	intervalMotor();
+
+	orang.removeClass('pause');
+	
+	//cek lagi ada motor atau gak
+	if(motor !== false){
+		motor.removeClass('pause');
+	}
+}
+
+function hapusMotor(){
+	//hapus motor yang sudah selesai
+	motor.on("animationend", function() {
+	    $(this).remove();
+	});
+}
+
 function lompat(){
 	orang.addClass('lompat');
+
+	//belum FIX
+	hapusMotor();
 
 	//berhenti lompat
 	orang.on("animationend", function() {
@@ -20,21 +41,12 @@ function lompat(){
 	});
 }
 
-function jalan(){
-	orang.removeClass('pause');
-
-	//cek lagi ada motor atau gak
-	if(motor !== false){
-		motor.removeClass('pause');
-		intervalMotor();
-	}
-}
-
 function bikinMotor(){
-	game.append('<div class="motor">');
+	game.prepend('<div class="motor">');
 	motor = $('.motor');
 
-	motor.css({'animation' : 'maju 20s infinite,  motor2 .3s steps(3) infinite'});
+	//animasi motor
+	motor.css({'animation' : 'maju 20s forwards,  motor2 .3s steps(3) infinite'});
 }
 
 function range(min, max){
@@ -57,7 +69,7 @@ function intervalMotor(){
 				  	clearTimeout(timerId);
 				 	
 				 	//atur durasi keluar motor antara 3 detik sampai 6 detk
-				 	durasi = range(5000, 6000);
+				 	durasi = range(3000, 5000);
 				 	// durasi = 3000;
 				 	console.log(durasi);
 
@@ -76,7 +88,6 @@ function tombol(){
 
 				//pertama kali mulai remove class start
 				if(game.hasClass('start')){
-					intervalMotor();
 					game.removeClass('start');
 				}
 

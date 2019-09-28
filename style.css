@@ -73,7 +73,7 @@ h4{font-size: 1em; margin-top: 0px;
 
 @keyframes maju {
     from { left:1380px; }
-    to{ left: -1000px; }
+    to{ left: -500px; }
 }
 
 @keyframes motor1 {
