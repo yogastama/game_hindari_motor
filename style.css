@@ -1,9 +1,24 @@
 body{ background:#f9f9f9; font-family: 'Roboto', sans-serif; overflow: hidden; }
-.container{ width: 600px; text-align: center; margin: 40px auto;}
-h3{color: #1cb7b0; font-size: 2.5em; letter-spacing: 0.1em;
-   margin-top: 0px; margin-bottom: 10px; }
-h4{font-size: 1em; margin-top: 0px;
-    margin-bottom: 10px; text-transform: uppercase; }
+h3{
+    color: #1cb7b0;
+    font-size: 2.5em;
+    letter-spacing: 0.1em;
+    position: absolute;
+    text-transform: uppercase;
+    margin: 0px;
+    left: 50%;
+    top: 20px;
+    transform: translate(-50%, 0%);
+}
+h4{
+    font-size: 1em;
+    text-transform: uppercase;
+    position: absolute;
+    left: 50%;
+    top: 80px;
+    margin: 0px;
+    transform: translate(-50%, 0%);
+}
 .frame{ display: flex; flex-wrap: wrap; padding: 10px; align-content: center; }
 
 /*tombol*/
@@ -19,13 +34,15 @@ h4{font-size: 1em; margin-top: 0px;
 
 /*animasi orang jalan*/
 #orang {
-  width: 140px;
-  height: 203px;
+  width: 95px;
+  height: 138px;
   margin: 0px auto;
   position: absolute;
-  left: 170px;
-  bottom: 30px;
+  left: 150px;
+  bottom: 50px;
   background: url('images/animasi.png');
+  left: 50%;
+  transform: translate(-50%, 0%);
 }
 
 .jalan{
@@ -44,36 +61,57 @@ h4{font-size: 1em; margin-top: 0px;
 
 @keyframes lompat {
     0% {
-      bottom: 30px;
+      bottom: 50px;
       background-position-x: 0px;
-      background-position-y: -203px;
+      background-position-y: -138px;
     }
-    20%{ bottom: 150px; }
-    30%{ bottom: 160px; }
-    85%{ bottom: 160px; }
-    90%{ bottom: 150px; }
+    20%{ bottom: 170px; }
+    30%{ bottom: 180px; }
+    85%{ bottom: 180px; }
+    90%{ bottom: 170px; }
     100%{
-      bottom: 30px;
+      bottom: 50px;
       background-position-x: -2100px;
-      background-position-y: -203px;
+      background-position-y: -138px;
     }
+}
+
+.mati{
+  width: 140px !important;
+  animation: mati .7s steps(14) forwards;
+}
+
+@keyframes mati {
+    from { background-position-x: 0px; background-position-y: -276px; }
+    to{ background-position-x: -1960px; background-position-y: -276px; }
 }
 
 /*MOTOR*/
 .motor {
-  width: 250px;
   height: 136px;
   margin: 0px auto;
   background: url('images/motor.png');
   position: absolute;
-  bottom: 30px;
+  bottom: 50px;
   z-index: -1;
   animation-play-state: paused;
 }
 
 @keyframes maju {
     from { left:1380px; }
-    to{ left: -500px; }
+    to{ left: -750px; }
+}
+
+.motor1{
+  width: 240px;
+}
+
+.motor2{
+  width: 184px;
+}
+
+.motor3{
+  width: 190px;
 }
 
 @keyframes motor1 {
