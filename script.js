@@ -1,6 +1,8 @@
 //deklarasi global variable
 let game;
 let orang;
+let papanNilai;
+let nilai = 0;
 let motor = false;
 let durasi = 500;
 let timer = false;
@@ -26,11 +28,22 @@ function range(min, max){
  	return durasi;
 }
 
+function motorSudahAda(){
+	if(motor !== false){
+		return true;
+	}
+
+	return false;
+}
+
 function pause(){
 	orang.addClass('pause');
-	motor.addClass('pause');
-	clearTimeout(timer);
-	clearTimeout(timerCollision);
+
+	if(motorSudahAda()){
+		motor.addClass('pause');
+		clearTimeout(timer);
+		clearTimeout(timerCollision);
+	}
 }
 
 function jalan(){	
@@ -38,7 +51,7 @@ function jalan(){
 	orang.removeClass('pause');
 	
 	//cek lagi ada motor atau gak
-	if(motor !== false){
+	if(motorSudahAda()){
 		motor.removeClass('pause');
 	}
 
@@ -59,6 +72,14 @@ function lompat(){
 	//berhenti lompat
 	orang.on("animationend", function() {
 	    $(this).removeClass("lompat");
+	});
+}
+
+function infoJadiPapanNilai(){
+	$('#info').animate({'top' : '-150'}, 700, function(){
+		papanNilai.text(0).css({'font-size': '5em'});
+		$('#instruksi').hide();
+		$('#info').animate({'top' : '0'}, 700);
 	});
 }
 
@@ -88,18 +109,26 @@ function collision(){
 			let tinggiOrang = posOrang.y + posOrang.tinggi;
 			let tinggiMotor = posMotor.y + posMotor.tinggi;
 
-			if(lebarOrang > posMotor.x && lebarOrang < lebarMotor){
+			if($(this).hasClass('tantangan')){
+				if(lebarOrang > posMotor.x && lebarOrang < lebarMotor){
 
-				if(tinggiOrang < tinggiMotor){
-					// console.log(lebarOrang + '--' + posMotor.x + ' && ' + lebarOrang + '--' + lebarMotor);
-					// pause();
-					// console.log('%cSuccess', 'color:green');
-					hapusMotor();
-				}else{
-					// console.log(lebarOrang + '--' + posMotor.x + ' && ' + lebarOrang + '--' + lebarMotor);
-					// console.log('%cgagal', 'color:red');
-					// pause();
-					orang.addClass('mati');
+					if(tinggiOrang < tinggiMotor){
+						// console.log(lebarOrang + '--' + posMotor.x + ' && ' + lebarOrang + '--' + lebarMotor);
+						// pause();
+						$(this).removeClass('tantangan');
+
+						console.log('%cSuccess', 'color:green');
+
+						nilai = nilai + 1;
+						papanNilai.text(nilai);
+
+						hapusMotor();
+					}else{
+						// console.log(lebarOrang + '--' + posMotor.x + ' && ' + lebarOrang + '--' + lebarMotor);
+						// console.log('%cgagal', 'color:red');
+						// pause();
+						orang.addClass('mati');
+					}
 				}
 			}
 		});
@@ -118,7 +147,7 @@ function bikinMotor(){
 	//animasi motor
 	let jeniMotor = range(1, 3);
 	let pilihMotor = 'motor' + jeniMotor;
-	motor.first().addClass(pilihMotor);
+	motor.first().addClass(pilihMotor + ' tantangan');
 	motor.first().css({'animation' : 'maju 18s forwards,  '+ pilihMotor +' .3s steps(3) infinite'});
 }
 
@@ -134,17 +163,25 @@ function intervalMotor(){
 				 	durasi = range(3000, 5000);
 
 				  	intervalMotor();
-			  }, durasi);
+			 }, durasi);
 }
 
-function tombol(){
+function mulai(){
 	$(document).on('keydown', function(e){
 		
 		//32 adalah spasi
 		if(e.keyCode == 32){
-			if(orang.hasClass('pause')){
+			if(game.hasClass('start')){
+				jalan();
+				infoJadiPapanNilai();
+
+				//game sudah jalan, hapus class start
+				game.removeClass('start');
+			}
+			else if(orang.hasClass('pause')){
 				//pertama kali spasi jalan
-				jalan(); 
+				jalan();
+
 			}else{
 				//spasi selanjutnya lompat
 				lompat();
@@ -159,13 +196,16 @@ function tombol(){
 }
 
 function init(){
-	tombol();
-}
-
-$(document).ready(function(){
 	//simpan selector di global variable
 	game = $('#game');
 	orang = $('#orang');
+	papanNilai = $('#nilai');
+
+	pause();
+	mulai();
+}
+
+$(document).ready(function(){
 
 	init();
 });

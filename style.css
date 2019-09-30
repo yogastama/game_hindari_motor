@@ -1,7 +1,7 @@
 body{ background:#f9f9f9; font-family: 'Roboto', sans-serif; overflow: hidden; }
 h3{
     color: #1cb7b0;
-    font-size: 2.5em;
+    font-size: 1.5em;
     letter-spacing: 0.1em;
     position: absolute;
     text-transform: uppercase;
@@ -14,12 +14,13 @@ h4{
     font-size: 1em;
     text-transform: uppercase;
     position: absolute;
+    width: 520px;
     left: 50%;
-    top: 80px;
+    top: 60px;
     margin: 0px;
     transform: translate(-50%, 0%);
 }
-.frame{ display: flex; flex-wrap: wrap; padding: 10px; align-content: center; }
+#info{ position: relative;  }
 
 /*tombol*/
 .tombol{ flex-basis: 100%; }
