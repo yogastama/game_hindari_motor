@@ -14,8 +14,10 @@ let timerCollision = false;
 	
   aturLebarOrang akan menjadi dinamis agar bisa lebih dalam ketika melompat
   supaya real seperti hanya mati ketika tabrak stang motor
+
+  dibuat json agar sewaktu-waktu bisa di tambah atribut lainy, misalnya tinggi
 */
-let aturLebarOrang = 40;
+let aturOrang = {'lebar' : 50, 'tinggi' : 80};
 
 function range(min, max){
  	/*	karena Javascript tidak punya fungsi range, maka kita buat range sendiri
@@ -56,7 +58,7 @@ function jalan(){
 	}
 
 	//delay sebelum mulai menghitung collision
-	setTimeout(collision, 1000);
+	setTimeout(collisionMotor, 1000);
 }
 
 function hapusMotor(){
@@ -83,7 +85,7 @@ function infoJadiPapanNilai(){
 	});
 }
 
-function collision(){
+function collisionMotor(){
 	setTimeout(function(){
 		motor.each(function(index, obj){
 			//orang
@@ -98,42 +100,32 @@ function collision(){
 							 'x'		: $(this).offset().left,
 							 'y'		: $(this).offset().top };
 
-			// console.log((posOrang.y + posOrang.tinggi) +'--'+ posMotor.y);
-			// console.log((posOrang.x + posOrang.lebar) +' -- '+ posMotor.x);
-
-
 			//50 karena kepala lebih besar dari badan, padahal yang di tabrak badan, jadi kurangin 50
-			let lebarOrang = posOrang.x + posOrang.lebar - aturLebarOrang;
+			let lebarOrang = posOrang.x + posOrang.lebar - aturOrang.lebar;
 			let lebarMotor = posMotor.x + posMotor.lebar;
 			
-			let tinggiOrang = posOrang.y + posOrang.tinggi;
+			let tinggiOrang = posOrang.y + posOrang.tinggi - aturOrang.tinggi;
 			let tinggiMotor = posMotor.y + posMotor.tinggi;
 
-			if($(this).hasClass('tantangan')){
-				if(lebarOrang > posMotor.x && lebarOrang < lebarMotor){
-
-					if(tinggiOrang < tinggiMotor){
-						// console.log(lebarOrang + '--' + posMotor.x + ' && ' + lebarOrang + '--' + lebarMotor);
-						// pause();
-						$(this).removeClass('tantangan');
-
-						console.log('%cSuccess', 'color:green');
-
-						nilai = nilai + 1;
-						papanNilai.text(nilai);
-
-						hapusMotor();
-					}else{
-						// console.log(lebarOrang + '--' + posMotor.x + ' && ' + lebarOrang + '--' + lebarMotor);
-						// console.log('%cgagal', 'color:red');
-						// pause();
-						orang.addClass('mati');
-					}
+			if (lebarOrang >= posMotor.x && posOrang.x <= lebarMotor){				
+				if(tinggiOrang >= posMotor.y) {
+					$(this).removeClass('tantangan');
+					orang.addClass('mati');
+				}
+			}
+			else if(posOrang.x > lebarMotor){
+				if($(this).hasClass('tantangan')){
+					$(this).removeClass('tantangan');
+					
+					//nilai
+					nilai = nilai + 1;
+					papanNilai.text(nilai);
+					hapusMotor();
 				}
 			}
 		});
 
-		collision();
+		collisionMotor();
 	}, 100);
 }
 
@@ -147,7 +139,7 @@ function bikinMotor(){
 	//animasi motor
 	let jeniMotor = range(1, 3);
 	let pilihMotor = 'motor' + jeniMotor;
-	motor.first().addClass(pilihMotor + ' tantangan');
+	motor.first().addClass(pilihMotor + ' tantangan detect');
 	motor.first().css({'animation' : 'maju 18s forwards,  '+ pilihMotor +' .3s steps(3) infinite'});
 }
 
