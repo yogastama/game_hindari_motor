@@ -1,12 +1,19 @@
 //deklarasi global variable
 let game;
 let orang;
-let papanNilai;
-let nilai = 0;
+let frameMotor;
 let motor = false;
 let durasi = 500;
-let timer = false;
+let timerBikinMotor = false;
 let timerCollision = false;
+let papanNilai;
+let nilai;
+let strNilai = 0;
+let info;
+let namaGame;
+let instruksi;
+let strNamaGame = 'HINDARI MOTOR';
+let strInstruksi = 'TEKAN (space) untuk mulai dan lompat, tekan (p) untuk pause';
 
 /*jarak dari ukuran gambar .jalan / .lompat dari kanan sampai kaki
   supaya mati hanya ketika ketabrak kaki, bukan box nya
@@ -40,11 +47,11 @@ function motorSudahAda(){
 
 function pause(){
 	orang.addClass('pause');
-
+	tampilkanInfo();
 	if(motorSudahAda()){
 		motor.addClass('pause');
-		clearTimeout(timer);
-		clearTimeout(timerCollision);
+		window.clearTimeout(timerBikinMotor);
+		window.clearTimeout(timerCollision);
 	}
 }
 
@@ -57,7 +64,7 @@ function jalan(){
 		motor.removeClass('pause');
 	}
 
-	//delay sebelum mulai menghitung collision
+	//delay sebelum mulai mengeluarkan motor
 	setTimeout(collisionMotor, 1000);
 }
 
@@ -77,53 +84,83 @@ function lompat(){
 	});
 }
 
-function infoJadiPapanNilai(){
-	$('#info').animate({'top' : '-150'}, 700, function(){
-		papanNilai.text(0).css({'font-size': '5em'});
-		$('#instruksi').hide();
-		$('#info').animate({'top' : '0'}, 700);
-	});
+function tampilkanInfo(){
+	// namaGame.show();
+	// instruksi.show();
+	return info.animate({'top' : '25'}, 1000).promise();
+}
+
+function hilangkanInfo(){
+	return info.animate({'top' : '-150'}, 1000).promise();
+}
+
+function tampilkanPapanNilai(){
+	// nilai.show();
+	return papanNilai.animate({'top' : '120'}, 700).promise();
+}
+
+function mati(){
+	tampilkanInfo();
+	window.clearTimeout(timerBikinMotor);
+	window.clearTimeout(timerCollision);
+	orang.addClass('mati');
+	game.addClass('reset');
+}
+
+function reset(){
+	// info.hide();
+
+	// window.clearTimeout(timerBikinMotor);
+	// window.clearTimeout(timerCollision);
+	// orang.removeClass('mati');
+
+	// frameMotor.html(''); //hapus semua motor
+	
+	// strNilai = 0;
+	// nilai.text(strNilai);
+
+	location.reload();
 }
 
 function collisionMotor(){
-	setTimeout(function(){
-		motor.each(function(index, obj){
-			//orang
-			let posOrang = { 'lebar'	: orang.width(),
-							 'tinggi'	: orang.height(),
-							 'x'		: orang.offset().left,
-							 'y'		: orang.offset().top };
-			
-			//motor
-			let posMotor = { 'lebar'	: $(this).width(),
-							 'tinggi'	: $(this).height(),
-							 'x'		: $(this).offset().left,
-							 'y'		: $(this).offset().top };
+	timerCollision = setTimeout(function(){
+						motor.each(function(index, obj){
+							//orang
+							let posOrang = { 'lebar'	: orang.width(),
+											 'tinggi'	: orang.height(),
+											 'x'		: orang.offset().left,
+											 'y'		: orang.offset().top };
+							
+							//motor
+							let posMotor = { 'lebar'	: $(this).width(),
+											 'tinggi'	: $(this).height(),
+											 'x'		: $(this).offset().left,
+											 'y'		: $(this).offset().top };
 
-			//50 karena kepala lebih besar dari badan, padahal yang di tabrak badan, jadi kurangin 50
-			let lebarOrang = posOrang.x + posOrang.lebar - aturOrang.lebar;
-			let lebarMotor = posMotor.x + posMotor.lebar;
-			
-			let tinggiOrang = posOrang.y + posOrang.tinggi - aturOrang.tinggi;
-			let tinggiMotor = posMotor.y + posMotor.tinggi;
+							//50 karena kepala lebih besar dari badan, padahal yang di tabrak badan, jadi kurangin 50
+							let lebarOrang = posOrang.x + posOrang.lebar - aturOrang.lebar;
+							let lebarMotor = posMotor.x + posMotor.lebar;
+							
+							let tinggiOrang = posOrang.y + posOrang.tinggi - aturOrang.tinggi;
+							let tinggiMotor = posMotor.y + posMotor.tinggi;
 
-			if (lebarOrang >= posMotor.x && posOrang.x <= lebarMotor){				
-				if(tinggiOrang >= posMotor.y) {
-					$(this).removeClass('tantangan');
-					orang.addClass('mati');
-				}
-			}
-			else if(posOrang.x > lebarMotor){
-				if($(this).hasClass('tantangan')){
-					$(this).removeClass('tantangan');
-					
-					//nilai
-					nilai = nilai + 1;
-					papanNilai.text(nilai);
-					hapusMotor();
-				}
-			}
-		});
+							if (lebarOrang >= posMotor.x && posOrang.x <= lebarMotor){				
+								if(tinggiOrang >= posMotor.y) {
+									$(this).removeClass('tantangan');
+									mati();
+								}
+							}
+							else if(posOrang.x > lebarMotor){
+								if($(this).hasClass('tantangan')){
+									$(this).removeClass('tantangan');
+									
+									//nilai
+									strNilai = strNilai + 1;
+									nilai.text(strNilai);
+									hapusMotor();
+								}
+							}
+						});
 
 		collisionMotor();
 	}, 100);
@@ -131,7 +168,7 @@ function collisionMotor(){
 
 function bikinMotor(){
 	//bikin emelement motor
-	game.prepend('<div class="motor">');
+	frameMotor.prepend('<div class="motor">');
 
 	//isi variable motor sebagai selector
 	motor = $('.motor');
@@ -144,12 +181,12 @@ function bikinMotor(){
 }
 
 function intervalMotor(){
-	timer = setTimeout(function(){
+	timerBikinMotor = setTimeout(function(){
 				 	//bikin motor
 				 	bikinMotor();
 				  	
 				  	//clear timeout saatini
-				  	clearTimeout(timer);
+				  	window.clearTimeout(timerBikinMotor);
 				 	
 				 	//atur durasi keluar motor antara 3 detik sampai 6 detk
 				 	durasi = range(3000, 5000);
@@ -158,20 +195,26 @@ function intervalMotor(){
 			 }, durasi);
 }
 
-function mulai(){
+function kontrol(){
 	$(document).on('keydown', function(e){
-		
 		//32 adalah spasi
 		if(e.keyCode == 32){
 			if(game.hasClass('start')){
+				//pertama kali spasi jalan
 				jalan();
-				infoJadiPapanNilai();
+				hilangkanInfo().then(function(){ 
+					tampilkanPapanNilai();
+				});
 
 				//game sudah jalan, hapus class start
 				game.removeClass('start');
 			}
+			else if(game.hasClass('reset')){
+				reset();
+				jalan();
+			}
 			else if(orang.hasClass('pause')){
-				//pertama kali spasi jalan
+				hilangkanInfo();
 				jalan();
 
 			}else{
@@ -183,21 +226,36 @@ function mulai(){
 			//80 adalah huruf p
 			pause();
 		}
-
 	});
 }
 
 function init(){
+	
 	//simpan selector di global variable
 	game = $('#game');
 	orang = $('#orang');
-	papanNilai = $('#nilai');
+	info = $('#info');
+	papanNilai = $('#papanNilai');
+	frameMotor = $('#frameMotor');
 
+	//bikin beberapa element di info
+	info.append('<h3 class="namaGame"><h4 class="instruksi">');
+	papanNilai.append('<h5 class="nilai">');
+	
+	//simpan selector yang ada di info ke global variable
+	nilai = $('.nilai');
+	namaGame = $('.namaGame');
+	instruksi = $('.instruksi');
+
+	nilai.text(strNilai);
+	namaGame.text(strNamaGame);
+	instruksi.text(strInstruksi);
+
+	tampilkanInfo();
 	pause();
-	mulai();
+	kontrol();
 }
 
 $(document).ready(function(){
-
-	init();
+	setTimeout(init(), 1000);
 });

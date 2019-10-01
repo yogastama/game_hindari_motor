@@ -4,35 +4,32 @@ body{ background:#f9f9f9; font-family: 'Roboto', sans-serif; overflow: hidden; }
   border:1px solid black;
 }
 
-h3{
+.namaGame{
     color: #1cb7b0;
     font-size: 1.5em;
     letter-spacing: 0.1em;
-    position: absolute;
     text-transform: uppercase;
     margin: 0px;
-    left: 50%;
-    top: 20px;
-    transform: translate(-50%, 0%);
 }
-h4{
+.instruksi{
     font-size: 1em;
     text-transform: uppercase;
-    position: absolute;
-    width: 520px;
-    left: 50%;
-    top: 60px;
-    margin: 0px;
-    transform: translate(-50%, 0%);
+    margin-top: 15px;
 }
-#info{ position: relative;  }
+.nilai {
+  font-size: 5em;
+  color: #1cb7b0;
+  margin: 0px;
+}
 
-/*tombol*/
-.tombol{ flex-basis: 100%; }
-.tombolAnimation { border: none; color: white; padding: 10px 25px; margin-bottom: 100px;
-   				   text-transform: uppercase; font-weight: bold; cursor: pointer; }
-#tombolBerhenti{ background: #FF6666; }
-#tombolJalan{ background: #33C2DF; }
+/*INFO*/
+#info, #papanNilai{
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  top:-250px;
+}
 
 .pause{
   animation-play-state: paused !important;
