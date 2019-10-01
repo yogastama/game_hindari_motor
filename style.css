@@ -12,9 +12,10 @@ body{ background:#f9f9f9; font-family: 'Roboto', sans-serif; overflow: hidden; }
     margin: 0px;
 }
 .instruksi{
-    font-size: 1em;
+    font-size: 0.7em;
     text-transform: uppercase;
     margin-top: 15px;
+    width: 400px;
 }
 .nilai {
   font-size: 5em;

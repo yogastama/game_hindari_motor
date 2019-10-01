@@ -144,11 +144,11 @@ function collisionMotor(){
 							let tinggiOrang = posOrang.y + posOrang.tinggi - aturOrang.tinggi;
 							let tinggiMotor = posMotor.y + posMotor.tinggi;
 
-							if (lebarOrang >= posMotor.x && posOrang.x <= lebarMotor){				
-								if(tinggiOrang >= posMotor.y) {
+							if (lebarOrang >= posMotor.x && posOrang.x <= lebarMotor && tinggiOrang >= posMotor.y){				
+								// if() {
 									$(this).removeClass('tantangan');
 									mati();
-								}
+								// }
 							}
 							else if(posOrang.x > lebarMotor){
 								if($(this).hasClass('tantangan')){
